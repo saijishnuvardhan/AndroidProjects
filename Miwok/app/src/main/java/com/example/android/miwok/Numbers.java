@@ -17,18 +17,18 @@ public class Numbers extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_numbers);
-        ArrayList<String> numbers=new ArrayList<String>();
-        numbers.add("One");
-        numbers.add("Two");
-        numbers.add("Three");
-        numbers.add("Four");
-        numbers.add("Five");
-        numbers.add("Six");
-        numbers.add("Seven");
-        numbers.add("Eight");
-        numbers.add("Nine");
-        numbers.add("Ten");
-        ArrayAdapter<String> item=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,numbers);
+        ArrayList<Work> numbers=new ArrayList<Work>();
+        numbers.add(new Work("One","lutti"));
+        numbers.add(new Work("Two","ottiko"));
+        numbers.add(new Work("Three","tolookosu"));
+        numbers.add(new Work("Four","oyyisa"));
+        numbers.add(new Work("Five","massokka"));
+        numbers.add(new Work("Six","temmokka"));
+        numbers.add(new Work("Seven","kenekaku"));
+        numbers.add(new Work("Eight","kawinta"));
+        numbers.add(new Work("Nine","wo'e"));
+        numbers.add(new Work("Ten","na'aacha"));
+        WorkAdapter item=new WorkAdapter(this,numbers);
         ListView listView=(ListView) findViewById(R.id.list);
         listView.setAdapter(item);
         }

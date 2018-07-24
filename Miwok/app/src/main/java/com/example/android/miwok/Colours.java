@@ -21,7 +21,7 @@ public class Colours extends AppCompatActivity {
         numbers.add(new Work("White","telupu",R.drawable.color_white));
         numbers.add(new Work("Gray","Budidha",R.drawable.color_gray));
         numbers.add(new Work("Brown","Braun raṅgu",R.drawable.color_brown));
-        WorkAdapter item=new WorkAdapter(this,numbers);
+        WorkAdapter item=new WorkAdapter(this,numbers,R.color.category_colors);
         ListView listView=(ListView) findViewById(R.id.colors);
         listView.setAdapter(item);
     }

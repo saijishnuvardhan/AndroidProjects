@@ -24,7 +24,7 @@ public class Family extends AppCompatActivity {
         numbers.add(new Work("Younger Brother","tammudu",R.drawable.family_younger_brother));
         numbers.add(new Work("Daughter","kuthuru",R.drawable.family_daughter));
         numbers.add(new Work("Son","koduku",R.drawable.family_son));
-        WorkAdapter item=new WorkAdapter(this,numbers);
+        WorkAdapter item=new WorkAdapter(this,numbers,R.color.category_family);
         ListView listView=(ListView) findViewById(R.id.family);
         listView.setAdapter(item);
     }

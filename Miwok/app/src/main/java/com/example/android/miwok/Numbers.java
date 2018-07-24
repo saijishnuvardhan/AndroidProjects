@@ -28,7 +28,7 @@ public class Numbers extends AppCompatActivity {
         numbers.add(new Work("Eight","kawinta",R.drawable.number_eight));
         numbers.add(new Work("Nine","wo'e",R.drawable.number_nine));
         numbers.add(new Work("Ten","na'aacha",R.drawable.number_ten));
-        WorkAdapter item=new WorkAdapter(this,numbers);
+        WorkAdapter item=new WorkAdapter(this,numbers,R.color.category_numbers);
         ListView listView=(ListView) findViewById(R.id.list);
         listView.setAdapter(item);
         }

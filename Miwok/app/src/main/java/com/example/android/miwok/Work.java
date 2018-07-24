@@ -3,7 +3,9 @@ package com.example.android.miwok;
 public class Work {
 
     private String dTranslation,miwokTranslation;
-    private int resourceID;
+    private int resourceID=NOIMAGEPROVIDED;
+
+    public static final int NOIMAGEPROVIDED=-1;
 
     public Work(String dtal, String miwokTranslation){
         this.dTranslation=dtal;
@@ -26,6 +28,10 @@ public class Work {
 
     public int getResourceID(){
         return resourceID;
+    }
+
+    public boolean hasImage(){
+        return resourceID!=NOIMAGEPROVIDED;
     }
 }
 

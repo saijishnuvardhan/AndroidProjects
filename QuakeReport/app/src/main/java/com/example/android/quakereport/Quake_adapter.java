@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Quake_adapter extends ArrayAdapter<Quake> {
@@ -28,13 +29,21 @@ public class Quake_adapter extends ArrayAdapter<Quake> {
         Quake currentpos=getItem(position);
 
         TextView mag=(TextView)Quakeitem.findViewById(R.id.magnitude);
-        mag.setText(currentpos.getMagnitude());
+        DecimalFormat decimalFormat=new DecimalFormat("0.0");
+        String magnitude=decimalFormat.format(currentpos.getMagnitude());
+        mag.setText(magnitude);
+
+        TextView direction=(TextView)Quakeitem.findViewById(R.id.direction);
+        direction.setText(currentpos.getDirection());
 
         TextView city=(TextView)Quakeitem.findViewById(R.id.city);
         city.setText(currentpos.getCity());
 
         TextView date=(TextView)Quakeitem.findViewById(R.id.date);
         date.setText(currentpos.getDate());
+
+        TextView time=(TextView)Quakeitem.findViewById(R.id.time);
+        time.setText(currentpos.getTime());
 
         return Quakeitem;
     }

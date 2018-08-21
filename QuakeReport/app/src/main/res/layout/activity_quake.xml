@@ -14,7 +14,14 @@
         android:layout_weight="1"
         android:text="6.5"
         android:id="@+id/magnitude"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="12dp"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginRight="12dp"
+        android:id="@+id/direction"
         />
     <TextView
         android:layout_width="0dp"
@@ -25,14 +32,22 @@
         android:id="@+id/city"
 
         />
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="15/7/15"
         android:layout_toRightOf="@+id/city"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="12dp"
         android:id="@+id/date"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="3:00PM"
+        android:layout_marginLeft="12dp"
+        android:id="@+id/time"/>
 
 
 </LinearLayout>

@@ -1,21 +1,26 @@
 package com.example.android.quakereport;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 public class Quake {
 
-    private String magnitude;
+    double magnitude;
+    private String direction;
     private String city;
     private String dat;
+    private String time;
 
-    public Quake(String m,String c,String d){
+    public Quake(double m,String dir,String c,String d,String t){
         magnitude=m;
         city=c;
         dat=d;
+        direction=dir;
+        time=t;
     }
 
-    public String getMagnitude(){
+    public String getDirection() {
+        return direction;
+    }
+
+    public double getMagnitude(){
         return magnitude;
     }
 
@@ -25,5 +30,9 @@ public class Quake {
 
     public String getDate(){
         return dat;
+    }
+
+    public String getTime() {
+        return time;
     }
 }

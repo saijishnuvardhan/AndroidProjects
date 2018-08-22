@@ -75,7 +75,8 @@ public final class QueryUtils {
                 String dateo=dateFormat.format(dateobject);
                 SimpleDateFormat timeFormat=new SimpleDateFormat("h:mm a");
                 String timeo=timeFormat.format(timeinmill);
-                earthquakes.add(new Quake(mag,s[0],s[1],dateo,timeo));
+                String url=properties.getString("url").toString();
+                earthquakes.add(new Quake(mag,s[0],s[1],dateo,timeo,url));
             }
 
 

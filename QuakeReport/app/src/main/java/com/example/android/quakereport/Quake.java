@@ -7,13 +7,15 @@ public class Quake {
     private String city;
     private String dat;
     private String time;
+    private String url;
 
-    public Quake(double m,String dir,String c,String d,String t){
+    public Quake(double m,String dir,String c,String d,String t,String u){
         magnitude=m;
         city=c;
         dat=d;
         direction=dir;
         time=t;
+        url=u;
     }
 
     public String getDirection() {
@@ -35,4 +37,6 @@ public class Quake {
     public String getTime() {
         return time;
     }
+
+    public String getUrl(){ return url;}
 }

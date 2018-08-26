@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Extract relevant fields from the JSON response and create an {@link Event} object
-            Event earthquake = extractFeatureFromJson(jsonResponse);
+             Event  earthquake = extractFeatureFromJson(jsonResponse);
+
 
             // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
             return earthquake;
@@ -157,13 +158,23 @@ public class MainActivity extends AppCompatActivity {
             HttpURLConnection urlConnection = null;
             InputStream inputStream = null;
             try {
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.setReadTimeout(10000 /* milliseconds */);
-                urlConnection.setConnectTimeout(15000 /* milliseconds */);
-                urlConnection.connect();
-                inputStream = urlConnection.getInputStream();
-                jsonResponse = readFromStream(inputStream);
+                if(url==null) {
+                    return jsonResponse;
+                }
+                else{
+
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setReadTimeout(10000 /* milliseconds */);
+                    urlConnection.setConnectTimeout(15000 /* milliseconds */);
+                    urlConnection.connect();
+                    if (urlConnection.getResponseCode() == 200) {
+                        inputStream = urlConnection.getInputStream();
+                        jsonResponse = readFromStream(inputStream);
+                    }
+
+                }
+
             } catch (IOException e) {
                 // TODO: Handle the exception
             } finally {
@@ -201,28 +212,36 @@ public class MainActivity extends AppCompatActivity {
          * about the first earthquake from the input earthquakeJSON string.
          */
         private Event extractFeatureFromJson(String earthquakeJSON) {
-            try {
-                JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
-                JSONArray featureArray = baseJsonResponse.getJSONArray("features");
+                try {
+                    if (earthquakeJSON != null) {
+                        JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
+                        JSONArray featureArray = baseJsonResponse.getJSONArray("features");
 
-                // If there are results in the features array
-                if (featureArray.length() > 0) {
-                    // Extract out the first feature (which is an earthquake)
-                    JSONObject firstFeature = featureArray.getJSONObject(0);
-                    JSONObject properties = firstFeature.getJSONObject("properties");
+                        // If there are results in the features array
+                        if (featureArray.length() > 0) {
+                            // Extract out the first feature (which is an earthquake)
+                            JSONObject firstFeature = featureArray.getJSONObject(0);
+                            JSONObject properties = firstFeature.getJSONObject("properties");
 
-                    // Extract out the title, time, and tsunami values
-                    String title = properties.getString("title");
-                    long time = properties.getLong("time");
-                    int tsunamiAlert = properties.getInt("tsunami");
+                            // Extract out the title, time, and tsunami values
+                            String title = properties.getString("title");
+                            long time = properties.getLong("time");
+                            int tsunamiAlert = properties.getInt("tsunami");
 
-                    // Create a new {@link Event} object
-                    return new Event(title, time, tsunamiAlert);
+                            // Create a new {@link Event} object
+                            return new Event(title, time, tsunamiAlert);
+                        }
+
+                    }
+                    else{
+                        return null;
+                    }
+                }catch (JSONException e) {
+                    Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
                 }
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
+
+                return null;
             }
-            return null;
-        }
+
     }
 }

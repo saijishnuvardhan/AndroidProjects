@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 jsonResponse = makeHttpRequest(url);
             } catch (IOException e) {
                 // TODO Handle the IOException
+                Log.e(LOG_TAG,"Problem making HTTP Request",e);
             }
 
             // Extract relevant fields from the JSON response and create an {@link Event} object
@@ -172,11 +173,15 @@ public class MainActivity extends AppCompatActivity {
                         inputStream = urlConnection.getInputStream();
                         jsonResponse = readFromStream(inputStream);
                     }
+                    else{
+                        Log.e(LOG_TAG,"Error Response Code:"+urlConnection.getResponseCode());
+                    }
 
                 }
 
             } catch (IOException e) {
                 // TODO: Handle the exception
+                Log.e(LOG_TAG,"Problem Retriving the EarthQuake JSON Objects",e);
             } finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();

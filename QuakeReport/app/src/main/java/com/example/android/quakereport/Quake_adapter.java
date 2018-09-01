@@ -19,12 +19,13 @@ import android.widget.TextView;
 
 import java.net.URI;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.content.ContextCompat.startActivity;
 
 public class Quake_adapter extends ArrayAdapter<Quake> {
-    public Quake_adapter(@NonNull Context context, @NonNull List<Quake> objects) {
+    public Quake_adapter(@NonNull Context context, int resource, @NonNull List<Quake> objects) {
         super(context, 0, objects);
     }
 

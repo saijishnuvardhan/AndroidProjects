@@ -15,50 +15,74 @@
  */
 package com.example.android.quakereport;
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Loader;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity {
+public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Quake>> {
 
-    public static final String LOG_TAG = EarthquakeActivity.class.getName();
-
-
+    private static final String LOG_TAG = EarthquakeActivity.class.getName();
+    private static final String SAMPLE_JSON_RESPONSE = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    public static final int EARTHQUAKE_ID=1;
+    TextView textView;
+    ProgressBar pb;
+    protected Quake_adapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // Create a fake list of earthquake locations.
-        ArrayList<Quake> earthquakes = new ArrayList<>();
-//        earthquakes.add(new Quake("7.2","San Francisco","4/7/15"));
-//        earthquakes.add(new Quake("6.1","London","4/8/15"));
-//        earthquakes.add(new Quake("3.9","Tokyo","10/11/15"));
-//        earthquakes.add(new Quake("5.4","Mexico City","3/5/15"));
-//        earthquakes.add(new Quake("2.8","Moscow","31/1/14"));
-//        earthquakes.add(new Quake("4.9","Rio de Janeiro","16/8/13"));
-//        earthquakes.add(new Quake("1.6","Paris","30/10/12"));
-
-        // Find a reference to the {@link ListView} in the layout
-        earthquakes=QueryUtils.extractEarthquakes();
-//        for(int i=0;i<10;i++){
-//           String ur= earthquakes.get(i).getUrl();
-//           }
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        textView=(TextView)findViewById(R.id.text);
+        earthquakeListView.setEmptyView(textView);
+        mAdapter = new Quake_adapter(EarthquakeActivity.this,0, new ArrayList<Quake>());
+        earthquakeListView.setAdapter(mAdapter);
+        pb=(ProgressBar)findViewById(R.id.progress);
+        getLoaderManager().initLoader(EARTHQUAKE_ID, null, this);
 
-        // Create a new {@link ArrayAdapter} of earthquakes
-        Quake_adapter adapter = new Quake_adapter(this, earthquakes);
 
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
-        earthquakeListView.setAdapter(adapter);
+
     }
+
+    @Override
+    public void onLoaderReset(Loader<List<Quake>> loader) {
+       mAdapter.clear();
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Quake>> loader, List<Quake> data) {
+        pb.setVisibility(View.GONE);
+        textView.setText(R.string.no_earthquakes);
+      mAdapter.clear();
+
+      if(data!=null&&!data.isEmpty()){
+         mAdapter.addAll(data);
+      }
+    }
+
+    @Override
+    public Loader<List<Quake>> onCreateLoader(int id, Bundle args) {
+
+        return new EarthquakeLoader(this,SAMPLE_JSON_RESPONSE);
+            }
 }

@@ -7,7 +7,7 @@ import android.content.AsyncTaskLoader;
 
 import java.util.List;
 
-                                                                                                                                                                                                                                                                                                                                                                                public class BookLoader extends AsyncTaskLoader<List<Book>> {
+public class BookLoader extends AsyncTaskLoader<List<Book>> {
     public static final String LOG_TAG=BookLoader.class.getSimpleName();
     List<Book> list;
     String murl;

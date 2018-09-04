@@ -7,46 +7,57 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.content.ContextCompat.startActivity;
 
-public class Book_Adapter extends ArrayAdapter<Book> {
-    public Book_Adapter(@NonNull Context context, int resource, @NonNull List<Book> objects) {
-        super(context, 0, objects);
+public class Book_Adapter extends RecyclerView.Adapter<BookVHolder> {
+
+    private Context context;
+    private List<Book> books;
+    public Book_Adapter(Context context, List<Book> books){
+        this.context=context;
+        this.books=books;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View BookView=convertView;
-        if(BookView==null){
-            BookView= LayoutInflater.from(getContext()).inflate(R.layout.activity_book,parent ,false);
-        }
-        final Book currentpos=getItem(position);
-        TextView title=(TextView)BookView.findViewById(R.id.title);
-        title.setText(currentpos.gettitle());
+    public BookVHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v=LayoutInflater.from(context).inflate(R.layout.activity_book, parent,false);
+        BookVHolder bookVHolder=new BookVHolder(v);
+        return bookVHolder;
+    }
 
-        TextView author=(TextView)BookView.findViewById(R.id.author);
-        author.setText(currentpos.getAuthor());
+    @Override
+    public void onBindViewHolder(@NonNull final BookVHolder holder, final int position) {
 
-        LinearLayout l= BookView.findViewById(R.id.linear);
-        l.setOnClickListener(new View.OnClickListener() {
+        holder.textView.setText(books.get(position).gettitle());
+        holder.text.setText(books.get(position).getAuthor());
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                String url=currentpos.getUrl();
-                Intent in=new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(getContext(),in,null);
+            public void onClick(View v) {
+                String url=books.get(position).getUrl();
+                Intent intent=new Intent(Intent.ACTION_VIEW,Uri.parse(url));
+                startActivity(context, intent, null);
             }
         });
+        Glide.with(context).load(Uri.parse(books.get(position).getThumbnail())).into(holder.imageView);
+    }
 
-        return BookView;
+    @Override
+    public int getItemCount() {
+        return books.size();
     }
 }

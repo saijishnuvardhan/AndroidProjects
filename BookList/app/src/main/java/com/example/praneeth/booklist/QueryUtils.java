@@ -105,11 +105,12 @@ public final class QueryUtils {
                 JSONArray ar=volume.getJSONArray("authors");
                 String url="";
                 String author=ar.get(0).toString();
-
+                JSONObject image=volume.getJSONObject("imageLinks");
+                String thumbnail=image.getString("thumbnail");
                     url=volume.getString("infoLink").toString();
 
 
-                    list.add(new Book(title,author,url));
+                    list.add(new Book(title,author,url,thumbnail));
             }
         } catch (JSONException e) {
             e.printStackTrace();

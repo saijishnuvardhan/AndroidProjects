@@ -26,8 +26,8 @@ import static android.support.v4.content.ContextCompat.startActivity;
 public class Book_Adapter extends RecyclerView.Adapter<BookVHolder> {
 
     private Context context;
-    private List<Book> books;
-    public Book_Adapter(Context context, List<Book> books){
+    private ArrayList<Required> books;
+    public Book_Adapter(Context context, ArrayList<Required> books){
         this.context=context;
         this.books=books;
     }
@@ -35,7 +35,7 @@ public class Book_Adapter extends RecyclerView.Adapter<BookVHolder> {
     @NonNull
     @Override
     public BookVHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v=LayoutInflater.from(context).inflate(R.layout.activity_book, parent,false);
+        View v=LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_book, parent,false);
         BookVHolder bookVHolder=new BookVHolder(v);
         return bookVHolder;
     }
@@ -43,7 +43,7 @@ public class Book_Adapter extends RecyclerView.Adapter<BookVHolder> {
     @Override
     public void onBindViewHolder(@NonNull final BookVHolder holder, final int position) {
 
-        holder.textView.setText(books.get(position).gettitle());
+        holder.textView.setText(books.get(position).getName());
         holder.text.setText(books.get(position).getAuthor());
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override

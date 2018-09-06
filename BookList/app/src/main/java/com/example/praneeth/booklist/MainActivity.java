@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -40,34 +42,39 @@ public class MainActivity extends AppCompatActivity  {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     EditText editText;
-    ProgressBar progressBar;
-    Button button;
     ArrayList<Required> arrayList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar=(ProgressBar)findViewById(R.id.progress);
        editText=(EditText)findViewById(R.id.etext);
        bname=editText.getText().toString();
        recyclerView=(RecyclerView)findViewById(R.id.list);
        layoutManager=new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
        recyclerView.setLayoutManager(layoutManager);
 
-       button=(Button)findViewById(R.id.Button);
-       button.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               progressBar.setVisibility(View.VISIBLE);
-               arrayList.clear();
-               search();
-           }
-       });
-
        }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu );
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.search_bar:
+                arrayList.clear();
+                search();
+                return true;
+        }
+        return (super.onOptionsItemSelected(item));
+    }
 
     public void search(){
+        final View loadingIndicator=findViewById(R.id.progress);
+        loadingIndicator.setVisibility(View.VISIBLE);
         bname=editText.getText().toString();
         Retrofit retrofit=new Retrofit.Builder().baseUrl(Api.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
         Api api=retrofit.create(Api.class);
@@ -80,14 +87,9 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onResponse(Call<result> call, Response<result> response) {
                 result result=response.body();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 for(int i=0;i<result.getItems().size();i++) {
                     try {
-                        progressBar.setVisibility(View.INVISIBLE);
+                        loadingIndicator.setVisibility(View.GONE);
                         String name = result.getItems().get(i).getVolumeInfo().getTitle();
                         String author = result.getItems().get(i).getVolumeInfo().getAuthors().get(0);
                         String url = result.getItems().get(i).getVolumeInfo().getInfoLink();

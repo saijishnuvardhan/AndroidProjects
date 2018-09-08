@@ -8,6 +8,11 @@
         android:icon="@drawable/search"
         app:showAsAction="always"
         android:title="search"/>
-
+   <item
+       android:id="@+id/info"
+       android:icon="@drawable/info"
+       app:showAsAction="always"
+       android:title="Information"
+       />
 
 </menu>

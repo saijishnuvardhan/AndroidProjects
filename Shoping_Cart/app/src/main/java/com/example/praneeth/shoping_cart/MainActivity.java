@@ -1,13 +1,18 @@
 package com.example.praneeth.shoping_cart;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -83,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,SearchActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.info:
+                Intent intent1=new Intent(MainActivity.this,SalesActivity.class);
+                startActivity(intent1);
+                return true;
                 default:
                     return super.onOptionsItemSelected(item);
 
@@ -104,4 +113,6 @@ public class MainActivity extends AppCompatActivity {
         main.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(main);
     }
+
+
 }

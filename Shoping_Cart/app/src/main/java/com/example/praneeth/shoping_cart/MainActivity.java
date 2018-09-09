@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
+    View loader;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter<CartViewHolder> madapter;
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        loader=findViewById(R.id.progress1);
+        loader.setVisibility(View.VISIBLE);
         recyclerView=(RecyclerView)findViewById(R.id.recycler);
         layoutManager= new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public void renderPhones(){
         madapter=new Cart_Adapter(this,arrayList);
         madapter.notifyDataSetChanged();
+        loader.setVisibility(View.INVISIBLE);
         recyclerView.setAdapter(madapter);
 
     }

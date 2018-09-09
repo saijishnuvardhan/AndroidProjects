@@ -10,6 +10,7 @@ import android.widget.EditText;
 
 public class SearchActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,14 +22,12 @@ public class SearchActivity extends AppCompatActivity {
         final EditText editText3=findViewById(R.id.max);
 
 
+
         Button button=(Button)findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(editText.getText().toString(),"Model");
-                Log.i(editText1.getText().toString(),"Manufacturer");
-                Log.i(editText2.getText().toString(),"Min Price");
-                Log.i(editText3.getText().toString(),"MaxPrice");
+
                 Intent intent=new Intent(SearchActivity.this,MainActivity.class);
                 Bundle bundle=new Bundle();
                 if(editText.getText().toString()==""){

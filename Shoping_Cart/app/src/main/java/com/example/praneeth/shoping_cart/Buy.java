@@ -5,13 +5,13 @@ public class Buy {
     String username;
     int quantity;
     String model;
-    String inovice;
+    String invoiceNumber;
 
     public Buy(String username, int quantity, String model, String inovice) {
         this.username = username;
         this.quantity = quantity;
         this.model = model;
-        this.inovice = inovice;
+        this.invoiceNumber = inovice;
     }
 
     public String getUsername() {
@@ -27,6 +27,6 @@ public class Buy {
     }
 
     public String getInovice() {
-        return inovice;
+        return invoiceNumber;
     }
 }

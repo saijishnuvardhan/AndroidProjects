@@ -22,7 +22,7 @@ public class Sales_Adapter extends RecyclerView.Adapter<SalesViewHolder> {
     @NonNull
     @Override
     public SalesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(context).inflate(R.layout.activity_sales,parent,false );
+        View v= LayoutInflater.from(context).inflate(R.layout.buyinfo,parent,false );
         SalesViewHolder svh=new SalesViewHolder(v);
         return svh;
     }

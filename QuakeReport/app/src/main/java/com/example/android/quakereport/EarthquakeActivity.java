@@ -15,20 +15,26 @@
  */
 package com.example.android.quakereport;
 
+import android.annotation.SuppressLint;
 import android.app.LoaderManager;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -44,44 +50,46 @@ import java.util.List;
 public class EarthquakeActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Quake>> {
 
     private static final String LOG_TAG = EarthquakeActivity.class.getName();
-    private static final String SAMPLE_JSON_RESPONSE = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
-    public static final int EARTHQUAKE_ID=1;
+    private static final String SAMPLE_JSON_RESPONSE = "https://earthquake.usgs.gov/fdsnws/event/1/query";
+    public static final int EARTHQUAKE_ID = 1;
     TextView textView;
     ProgressBar pb;
     protected Quake_adapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
-        textView=(TextView)findViewById(R.id.text);
+        textView = (TextView) findViewById(R.id.text);
         earthquakeListView.setEmptyView(textView);
-        mAdapter = new Quake_adapter(EarthquakeActivity.this,0, new ArrayList<Quake>());
+        mAdapter = new Quake_adapter(EarthquakeActivity.this, 0, new ArrayList<Quake>());
         earthquakeListView.setAdapter(mAdapter);
-        pb=(ProgressBar)findViewById(R.id.progress);
+        pb = (ProgressBar) findViewById(R.id.progress);
         ConnectivityManager cm =
-                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
-        if(!isConnected){
-          earthquakeListView.setEmptyView(textView);
-          pb.setVisibility(View.GONE);
-          textView.setText(R.string.no_internet);
-          }
-          else {
+        if (!isConnected) {
+            earthquakeListView.setEmptyView(textView);
+            pb.setVisibility(View.GONE);
+            textView.setText(R.string.no_internet);
+        } else {
             getLoaderManager().initLoader(EARTHQUAKE_ID, null, this);
         }
-
-
+        
 
     }
 
+
+
+
     @Override
     public void onLoaderReset(Loader<List<Quake>> loader) {
-       mAdapter.clear();
+        mAdapter.clear();
 
     }
 
@@ -89,16 +97,49 @@ public class EarthquakeActivity extends AppCompatActivity implements LoaderManag
     public void onLoadFinished(Loader<List<Quake>> loader, List<Quake> data) {
         pb.setVisibility(View.GONE);
         textView.setText(R.string.no_earthquakes);
-      mAdapter.clear();
+        mAdapter.clear();
 
-      if(data!=null&&!data.isEmpty()){
-         mAdapter.addAll(data);
-      }
+        if (data != null && !data.isEmpty()) {
+            mAdapter.addAll(data);
+        }
     }
 
     @Override
     public Loader<List<Quake>> onCreateLoader(int id, Bundle args) {
 
-        return new EarthquakeLoader(this,SAMPLE_JSON_RESPONSE);
-            }
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        String minmagnitude=sharedPreferences.getString(getString(R.string.settings_min_magnitude_key),getString( R.string.settings_min_magnitude_default));
+
+        Uri baseURL=Uri.parse(SAMPLE_JSON_RESPONSE);
+
+        Uri.Builder builder=baseURL.buildUpon();
+
+        builder.appendQueryParameter("format", "geojson")
+                .appendQueryParameter("limit", "10")
+                .appendQueryParameter("minmag",minmagnitude)
+                .appendQueryParameter("orderby","time" );
+
+        return new EarthquakeLoader(this,builder.toString());
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.pref) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }
+

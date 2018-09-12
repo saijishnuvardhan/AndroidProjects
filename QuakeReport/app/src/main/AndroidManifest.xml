@@ -34,8 +34,9 @@
         </activity>
         <activity android:name=".Quake_adapter" />
         <activity android:name=".Quake" />
-        <activity android:name=".SettingsActivity"
-            android:label="@string/settings_title"></activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings_title" />
     </application>
 
 </manifest>

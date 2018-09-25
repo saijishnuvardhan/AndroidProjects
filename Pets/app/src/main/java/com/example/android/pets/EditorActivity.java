@@ -15,8 +15,10 @@
  */
 package com.example.android.pets;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -89,17 +91,15 @@ public class EditorActivity extends AppCompatActivity {
         cd.put(PetsEntry.COLUMN_PET_WEIGHT,weight);
 
 
-        PetDBHelper dbHelper=new PetDBHelper(this);
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        Uri uri=getContentResolver().insert(PetsEntry.CONTENT_URI,cd);
 
-        newRowId=db.insert(PetsEntry.TABLE_NAME,null,cd);
 
-        if(newRowId==-1){
-            Toast.makeText(this,"Error while saving pet",Toast.LENGTH_LONG).show();
+        if(uri==null){
+            Toast.makeText(this,R.string.error_while_inserting_pet,Toast.LENGTH_LONG).show();
         }
 
         else {
-            Toast.makeText(this,"New Row Id"+newRowId,Toast.LENGTH_LONG).show();
+            Toast.makeText(this,R.string.pet_saved,Toast.LENGTH_LONG).show();
         }
     }
     private void setupSpinner() {

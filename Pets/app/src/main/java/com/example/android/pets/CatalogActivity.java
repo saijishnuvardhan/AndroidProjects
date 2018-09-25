@@ -65,9 +65,7 @@ public class CatalogActivity extends AppCompatActivity {
         cd.put(PetsEntry.COLUMN_PET_GENDER,PetsEntry.GENDER_MALE);
         cd.put(PetsEntry.COLUMN_PET_WEIGHT,7);
 
-        SQLiteDatabase db=mDbHelper.getWritableDatabase();
-        long newRowId= db.insert(PetsEntry.TABLE_NAME,null,cd);
-        Log.i("Catalog Activity","New Row Id"+newRowId);
+        getContentResolver().insert(PetsEntry.CONTENT_URI,cd);
     }
 
     @Override
@@ -82,7 +80,6 @@ public class CatalogActivity extends AppCompatActivity {
         // and pass the context, which is the current activity.
 
         // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection={
                 PetsEntry.COLUMN_ID,
@@ -94,7 +91,7 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.query(PetsEntry.TABLE_NAME,projection,null,null,null,null,null);
+        Cursor cursor =getContentResolver().query(PetsEntry.CONTENT_URI,projection,null,null,null);
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
